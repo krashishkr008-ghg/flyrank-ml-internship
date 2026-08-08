@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Google Search Ranking & Discoverability Capstone</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background: #f5f7fb;
+        color: #202124;
+        line-height: 1.7;
+    }
+
+    .container {
+        max-width: 1000px;
+        margin: 40px auto;
+        padding: 0 24px 60px;
+    }
+
+    header {
+        background: #172554;
+        color: white;
+        padding: 45px;
+        border-radius: 18px;
+        margin-bottom: 28px;
+    }
+
+    header h1 {
+        font-size: 38px;
+        line-height: 1.2;
+        margin: 0 0 15px;
+    }
+
+    header p {
+        margin: 8px 0;
+        color: #dbeafe;
+    }
+
+    section {
+        background: white;
+        padding: 30px;
+        margin: 22px 0;
+        border-radius: 15px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+
+    h2 {
+        color: #172554;
+        margin-top: 0;
+        border-bottom: 2px solid #e5e7eb;
+        padding-bottom: 10px;
+    }
+
+    h3 {
+        color: #334155;
+    }
+
+    .abstract {
+        background: #eff6ff;
+        border-left: 5px solid #2563eb;
+        padding: 20px;
+        border-radius: 8px;
+    }
+
+    .metric-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+        margin: 20px 0;
+    }
+
+    .metric {
+        background: #f8fafc;
+        padding: 18px;
+        border-radius: 10px;
+        text-align: center;
+        border: 1px solid #e2e8f0;
+    }
+
+    .metric strong {
+        display: block;
+        font-size: 24px;
+        color: #172554;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+    }
+
+    th, td {
+        padding: 12px;
+        border-bottom: 1px solid #e5e7eb;
+        text-align: left;
+    }
+
+    th {
+        background: #f1f5f9;
+    }
+
+    .note {
+        background: #fff7ed;
+        border-left: 5px solid #f97316;
+        padding: 18px;
+        border-radius: 8px;
+    }
+
+    .success {
+        background: #f0fdf4;
+        border-left: 5px solid #16a34a;
+        padding: 18px;
+        border-radius: 8px;
+    }
+
+    .action {
+        padding: 15px;
+        margin: 12px 0;
+        background: #f8fafc;
+        border-radius: 8px;
+        border-left: 4px solid #2563eb;
+    }
+
+    footer {
+        text-align: center;
+        color: #64748b;
+        padding: 30px 0;
+    }
+
+    a {
+        color: #2563eb;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    @media (max-width: 700px) {
+        header h1 {
+            font-size: 30px;
+        }
+
+        .metric-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        section {
+            padding: 22px;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+    <h1>Google Search Ranking & Discoverability Capstone</h1>
+    <p><strong>Machine Learning — Search Performance Optimization</strong></p>
+    <p>Decision-support analysis for identifying webpages that may warrant SEO review.</p>
+</header>
+
+<section>
+    <h2>Abstract</h2>
+
+    <div class="abstract">
+        <p>
+            This project asks how search-volume and average-position signals can be
+            used to support the identification of webpages with lower observed
+            click-through rates (CTR). A Random Forest regression model was trained
+            to estimate CTR using search volume and average position, with grouped
+            validation used to reduce the risk of overly optimistic evaluation.
+            On the grouped validation split, the model measured an MAE of 0.5093
+            compared with 0.6032 for the previous validation result, while the
+            measured R² remained negative at -0.3700. The resulting scores were
+            therefore treated as directional decision-support signals rather than
+            proof of causal SEO effects or Google's ranking behavior.
+        </p>
+    </div>
+</section>
+
+<section>
+    <h2>1. Introduction / Problem Statement</h2>
+
+    <p>
+        Search teams need practical ways to decide which webpages deserve review
+        first. Reviewing every page equally can use time and resources inefficiently.
+    </p>
+
+    <p>
+        This capstone focuses on a Search Performance Optimization lane. The
+        decision supported by the analysis is:
+        <strong>which webpages should be reviewed first based on measured search
+        performance signals?</strong>
+    </p>
+
+    <p>
+        The intended users are SEO analysts, digital marketers, content teams,
+        and website owners. The output is a ranked review queue rather than an
+        automated publishing or optimization system.
+    </p>
+</section>
+
+<section>
+    <h2>2. Data</h2>
+
+    <p>
+        The project used the anonymized FlyRank ML Internship search dataset
+        available through the internship workspace. The working analysis used
+        content-level search performance records.
+    </p>
+
+    <h3>Features used</h3>
+
+    <ul>
+        <li>Search volume</li>
+        <li>Average search position</li>
+        <li>Click-through rate (CTR)</li>
+        <li>Client/content grouping information for validation</li>
+    </ul>
+
+    <h3>Public-safety exclusions</h3>
+
+    <p>
+        Client names, private queries, credentials, raw private exports, and other
+        identifying information were excluded from the public-facing research
+        artifact.
+    </p>
+
+    <p>
+        The analysis is intentionally limited to anonymized and aggregated signals
+        suitable for a public portfolio project.
+    </p>
+</section>
+
+<section>
+    <h2>3. Methodology</h2>
+
+    <h3>Research assumptions</h3>
+
+    <ul>
+        <li>Search volume and average position contain useful directional information about observed CTR.</li>
+        <li>The model is used for prioritization, not automatic decision-making.</li>
+        <li>Model predictions should be interpreted alongside human review.</li>
+    </ul>
+
+    <h3>Features</h3>
+
+    <p>
+        The final model used search volume and average position as input features.
+    </p>
+
+    <h3>Label</h3>
+
+    <p>
+        CTR was used as the regression target.
+    </p>
+
+    <h3>Model</h3>
+
+    <p>
+        A Random Forest Regressor with 100 estimators was used as the final model.
+    </p>
+
+    <h3>Validation</h3>
+
+    <p>
+        A grouped train/test split was used, with 20% of the groups held out for
+        testing. This was chosen to provide a more conservative validation design
+        than treating every row as independently interchangeable.
+    </p>
+
+    <h3>Leakage checks</h3>
+
+    <p>
+        Features were reviewed for information that would only become available
+        after the decision point. The final feature set was restricted to the
+        search-performance signals used for the modeling task.
+    </p>
+</section>
+
+<section>
+    <h2>4. Results — Model vs Baseline</h2>
+
+    <p>
+        The following results are reported using the validation comparison produced
+        during the capstone work.
+    </p>
+
+    <div class="metric-grid">
+        <div class="metric">
+            <strong>0.5093</strong>
+            Grouped MAE
+        </div>
+
+        <div class="metric">
+            <strong>-0.3700</strong>
+            Grouped R²
+        </div>
+
+        <div class="metric">
+            <strong>0.6032</strong>
+            Previous MAE
+        </div>
+
+        <div class="metric">
+            <strong>-1.3613</strong>
+            Previous R²
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Validation</th>
+                <th>MAE</th>
+                <th>R² Score</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>Previous Model</td>
+                <td>0.6032</td>
+                <td>-1.3613</td>
+            </tr>
+
+            <tr>
+                <td>Grouped Split</td>
+                <td>0.5093</td>
+                <td>-0.3700</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="note">
+        <strong>Interpretation:</strong>
+        The grouped validation result has lower measured MAE than the previous
+        result. However, the negative R² indicates that the model does not explain
+        the target particularly well on this validation setup. The result should
+        therefore be treated as directional prioritization evidence rather than
+        strong predictive performance.
+    </div>
+</section>
+
+<section>
+    <h2>5. Limitations & Honest Framing</h2>
+
+    <ul>
+        <li>The model does not establish causation.</li>
+        <li>It does not prove how Google's ranking system works.</li>
+        <li>It does not prove that changing a page will increase CTR.</li>
+        <li>Negative R² means the model's predictive performance remains limited.</li>
+        <li>The ranked queue should not be treated as an automatic optimization decision.</li>
+        <li>Results may change when the data distribution changes.</li>
+        <li>Human review remains necessary before taking content action.</li>
+    </ul>
+
+    <div class="success">
+        <strong>Safe claim:</strong>
+        The model provides a measured, directional decision-support signal for
+        prioritizing pages for review.
+    </div>
+</section>
+
+<section>
+    <h2>6. Ranked Recommendations</h2>
+
+    <p>
+        The action playbook converts model output into a human-reviewed content
+        review queue.
+    </p>
+
+    <div class="action">
+        <strong>Reason code: LOW_CTR</strong><br>
+        Review pages with relatively low observed CTR before making content or
+        metadata changes.
+    </div>
+
+    <div class="action">
+        <strong>Action: Review SEO</strong><br>
+        Check the page's title, description, search intent alignment, content
+        relevance, and overall search presentation.
+    </div>
+
+    <div class="action">
+        <strong>Priority:</strong>
+        Use the ranked action score to determine which pages should be reviewed
+        first.
+    </div>
+
+    <h3>Human-review rule</h3>
+
+    <p>
+        A recommendation should be reviewed by a person before any change is
+        made. The reviewer should consider search intent, content quality,
+        business relevance, existing page history, and other context unavailable
+        to the model.
+    </p>
+
+    <h3>What should NOT be automated</h3>
+
+    <ul>
+        <li>Automatic publishing of content changes</li>
+        <li>Automatic deletion of pages</li>
+        <li>Automatic changes to important metadata</li>
+        <li>Automatic SEO strategy decisions</li>
+        <li>Claims about Google's ranking algorithm</li>
+    </ul>
+</section>
+
+<section>
+    <h2>7. Reproducibility</h2>
+
+    <p>
+        The project work is organized in the repository under the
+        <code>work/</code> directory.
+    </p>
+
+    <ul>
+        <li><a href="./work/notebooks/w01_research_question.ipynb">Research question</a></li>
+        <li><a href="./work/notebooks/w02_ml_task_framing.ipynb">ML task framing</a></li>
+        <li><a href="./work/notebooks/w03_data_contract.ipynb">Data contract</a></li>
+        <li><a href="./work/notebooks/w03_feature_leakage_check.ipynb">Feature leakage check</a></li>
+        <li><a href="./work/notebooks/w04_signal_audit.ipynb">Signal audit</a></li>
+        <li><a href="./work/notebooks/w04_baseline_score.ipynb">Baseline score</a></li>
+        <li><a href="./work/notebooks/w05_model.ipynb">Model</a></li>
+        <li><a href="./work/notebooks/w06_validation_audit.ipynb">Validation audit</a></li>
+        <li><a href="./work/notebooks/w07_action_playbook.ipynb">Action playbook</a></li>
+        <li><a href="./work/notebooks/capstone.ipynb">Capstone notebook</a></li>
+    </ul>
+
+    <p>
+        The repository also contains the outputs and supporting artifacts used
+        during the project.
+    </p>
+</section>
+
+<section>
+    <h2>8. Acknowledgments & Data Credit</h2>
+
+    <p>
+        Built on the <strong>FlyRank ML Internship dataset</strong>.
+    </p>
+
+    <p>
+        <a href="https://flyrank.ai/" target="_blank">
+            FlyRank
+        </a>
+    </p>
+</section>
+
+<section>
+    <h2>5-Minute Demo Outline</h2>
+
+    <ol>
+        <li><strong>Question:</strong> Which webpages should be reviewed first?</li>
+        <li><strong>Method:</strong> Use search volume and average position to estimate CTR with a Random Forest model.</li>
+        <li><strong>Validation:</strong> Evaluate using a grouped train/test split.</li>
+        <li><strong>Result:</strong> Grouped MAE measured 0.5093, while R² remained negative at -0.3700.</li>
+        <li><strong>Recommendation:</strong> Use the ranked LOW_CTR queue as a human-reviewed SEO prioritization list.</li>
+    </ol>
+</section>
+
+<footer>
+    Google Search Ranking & Discoverability Capstone · Machine Learning
+</footer>
+
+</div>
+
+</body>
+</html>
