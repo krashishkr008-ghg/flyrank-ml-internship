@@ -175,17 +175,8 @@
 
     <div class="abstract">
         <p>
-            This project asks how search-volume and average-position signals can be
-            used to support the identification of webpages with lower observed
-            click-through rates (CTR). A Random Forest regression model was trained
-            to estimate CTR using search volume and average position, with grouped
-            validation used to reduce the risk of overly optimistic evaluation.
-            On the grouped validation split, the model measured an MAE of 0.5093
-            compared with 0.6032 for the previous validation result, while the
-            measured R² remained negative at -0.3700. The resulting scores were
-            therefore treated as directional decision-support signals rather than
-            proof of causal SEO effects or Google's ranking behavior.
-        </p>
+This project asks how search-volume and average-position signals can be used to support the identification of webpages with lower observed click-through rates (CTR). The analysis addresses a practical content-review problem represented by the FlyRank internship dataset: search teams may need to prioritize which webpages deserve human review first. A Random Forest regression model was trained to estimate CTR using search volume and average position, with grouped validation used to reduce the risk of overly optimistic evaluation. On the grouped validation split, the model measured an MAE of 0.5093 compared with 0.6032 for the previous validation result, while the measured R² remained negative at -0.3700. The resulting scores were therefore treated as directional decision-support signals for prioritization rather than proof of causal SEO effects or Google's ranking behavior.
+</p>
     </div>
 </section>
 
@@ -193,9 +184,13 @@
     <h2>1. Introduction / Problem Statement</h2>
 
     <p>
-        Search teams need practical ways to decide which webpages deserve review
-        first. Reviewing every page equally can use time and resources inefficiently.
-    </p>
+        Search teams need practical ways to decide which webpages deserve review first.
+        Reviewing every page equally can use time and resources inefficiently.
+   </p>
+
+   <p>
+        This reflects the broader content-review problem represented by the FlyRank internship dataset: search teams may have many webpages to evaluate but limited time to review them individually. The purpose of this analysis is therefore to turn available search-performance signals into a ranked review queue that can help humans decide where to look first.
+   </p>
 
     <p>
         This capstone focuses on a Search Performance Optimization lane. The
